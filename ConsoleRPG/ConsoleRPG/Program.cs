@@ -32,7 +32,8 @@ namespace ConsoleRPG
             Console.WriteLine();
             Console.WriteLine("1. 상태보기");
             Console.WriteLine("2. 인벤토리");
-            Console.WriteLine("3. 게임종료");
+            Console.WriteLine("3. 상점");
+            Console.WriteLine("4. 게임종료");
             Console.WriteLine();
             Console.WriteLine("원하시는 행동을 입력해주세요.");
 
@@ -47,6 +48,9 @@ namespace ConsoleRPG
                     DisplayInventory();
                     break;
                 case 3:
+                    DisplayShop();
+                    break;
+                case 4:
                     Environment.Exit(0);
                     break;
             }
@@ -185,6 +189,12 @@ namespace ConsoleRPG
                     DisplayItemEquip();
                     break;
             }
+        }
+        static void DisplayShop()
+        {
+            Console.Clear();
+            Console.WriteLine("상점입니다");
+            Console.WriteLine("개발중");
         }
         static int CheckValidInput(int min, int max)
         {
