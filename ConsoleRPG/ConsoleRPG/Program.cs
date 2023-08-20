@@ -5,10 +5,18 @@ namespace ConsoleRPG
     internal class Program
     {
         private static Character player;
+        static List<Item> eqItem= new List<Item>();
+        static List<Item> weaponShop = new List<Item>();
+        static List<Item> armorShop = new List<Item>();
         static List<Item> items = new List<Item>();
         string gap = "";
         static void Main(string[] args)
         {
+            for(int i = 0; i < 4; i++)
+            {
+                weaponShop.Add(new Weapon(i));
+                armorShop.Add(new Armor(i));
+            }
             items.Add(new Weapon(0));
             items.Add(new Armor(0));
             GameDataSetting();
@@ -26,7 +34,7 @@ namespace ConsoleRPG
         static void DisplayGameIntro()
         {
             Console.Clear();
-
+            Console.WriteLine(eqItem.Count);
             Console.WriteLine("스파르타 마을에 오신 여러분 환영합니다.");
             Console.WriteLine("이곳에서 전전으로 들어가기 전 활동을 할 수 있습니다.");
             Console.WriteLine();
@@ -37,7 +45,7 @@ namespace ConsoleRPG
             Console.WriteLine();
             Console.WriteLine("원하시는 행동을 입력해주세요.");
 
-            int input = CheckValidInput(1, 3);
+            int input = CheckValidInput(1, 4);
             switch (input)
             {
                 case 1:
@@ -148,11 +156,11 @@ namespace ConsoleRPG
             Console.WriteLine();
             Console.WriteLine("[아이템 목록]\n");
             Console.WriteLine("이름\t\t공격력\t방어력\t체력\t설명");
-            if(items.Count> 0)
+            if (items.Count> 0)
             {
                 for (int i = 0; i < items.Count; i++)
                 {
-                    string status = i.ToString() + ". " + items[i].Name + "\t" + items[i].Atk.ToString() + "\t" + items[i].Def.ToString() + "\t" + items[i].Hp.ToString() + "\t" + items[i].Explanation;
+                    string status = (i + 1).ToString() + ". " + items[i].Name + "\t" + items[i].Atk.ToString() + "\t" + items[i].Def.ToString() + "\t" + items[i].Hp.ToString() + "\t" + items[i].Explanation;
                     if (items[i].Equip)
                     {
                         string eqStatus = status.Insert(0, "[E]");
@@ -164,37 +172,178 @@ namespace ConsoleRPG
                     }
                     Console.WriteLine();
                 }
-                int key = CheckValidInput(0, items.Count - 1);
-                if (items[key].Equip)
-                {
-                    Console.WriteLine("장비를 해제했습니다");
-                    items[key].Equip = false;
-                }
-                else
-                {
-                    items[key].Equip = true;
-                    Console.WriteLine("장착이 완료되었습니다");
-                }
             }
-            Console.WriteLine();
-            Console.WriteLine("1. 재장착");
-            Console.WriteLine("0. 나가기");
-            int input = CheckValidInput(0, 1);
-            switch (input)
+            Console.WriteLine("\n0. 나가기");
+            while (true)
             {
-                case 0:
+                int key = CheckValidInput(0, items.Count);
+                if (key == 0)
+                {
                     DisplayInventory();
-                    break;
-                case 1:
-                    DisplayItemEquip();
-                    break;
+                }
+                else if (items[key - 1].Equip)
+                {
+                    Item xItem = null;
+                    if (eqItem.Count >= 0)
+                    {
+                        foreach (Item _item in eqItem)
+                        {
+                            if (items[key - 1] == _item)
+                            {
+                                xItem = _item;
+                                Console.WriteLine("장비를 해제했습니다");
+                                items[key - 1].Equip = false;
+                            }
+                        }
+                        eqItem.Remove(xItem);
+                    }
+                    else
+                    {
+                        Console.WriteLine("알수없는 오류 발생");
+                    }
+                }
+                else if (!items[key - 1].Equip)
+                {
+
+                    if (eqItem.Count >= 0 && eqItem.Count <= 6)
+                    {
+                        eqItem.Add(items[key - 1]);
+                        items[key - 1].Equip = true;
+                        Console.WriteLine("장착이 완료되었습니다");
+                    }
+                    else
+                    {
+                        Console.WriteLine("장비를 장착할 수 없습니다");
+                    }
+                }
             }
         }
         static void DisplayShop()
         {
             Console.Clear();
-            Console.WriteLine("상점입니다");
-            Console.WriteLine("개발중");
+            Console.WriteLine("0. 나가기");
+            Console.WriteLine("1. 무기 상점");
+            Console.WriteLine("2. 방어구 상점");
+            Console.WriteLine("3. 판매 상점");
+            int key = CheckValidInput(0, 3);
+            if(key == 0)
+            {
+                DisplayGameIntro();
+            }
+            else if (key == 3)
+            {
+                DisplaySellShop();
+            }
+            else
+            {
+                ShopDisplay(key);
+            }
+        }
+        static void ShopDisplay(int key)
+        {
+            List<Item> Shop = null;
+            if (key == 1)
+            {
+                Shop = weaponShop;
+                ShopWrite("무기", Shop);
+            }
+            else if(key == 2)
+            {
+                Shop = armorShop;
+                ShopWrite("방어구", Shop);
+            }
+            Console.WriteLine($"보유 골드 : {player.Gold} G");
+            Console.WriteLine("");
+            Console.WriteLine("0. 나가기");
+            while (true)
+            {
+                int buyItem = CheckValidInput(0, 4);
+                switch(buyItem)
+                {
+                    case 0:
+                        DisplayShop(); break;
+                    default:
+                        if(Shop.Count > 0)
+                        {
+                            if (Shop[buyItem -1] != null)
+                            {
+                                if (Shop[buyItem - 1].Price <= player.Gold)
+                                {
+                                    player.Gold -= Shop[buyItem - 1].Price;
+                                    Console.WriteLine("구매에 성공했습니다");
+                                    items.Add(Shop[buyItem - 1]);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("돈이 부족합니다");
+                                }
+                                Console.WriteLine($"보유 골드 : {player.Gold} G");
+                            }
+                            else
+                            {
+                                Console.WriteLine("잘못된 입력입니다");
+                                break;
+                            }
+                        }
+                        break;
+                }
+            }
+        }
+        static void DisplaySellShop()
+        {
+            ShopWrite("판매", items);
+            Console.WriteLine($"보유 골드 : {player.Gold} G");
+            Console.WriteLine("");
+            Console.WriteLine("0. 나가기");
+            while (true)
+            {
+                int buyItem = CheckValidInput(0, 4);
+                switch (buyItem)
+                {
+                    case 0:
+                        DisplayShop(); break;
+                    default:
+                        if (items.Count > 0)
+                        {
+                            if (items[buyItem - 1] != null)
+                            {
+                                if (items[buyItem - 1].Equip)
+                                {
+                                    Console.WriteLine("장착중인 아이템은 판매할 수 없습니다");
+                                }
+                                else
+                                {
+                                    player.Gold += (items[buyItem - 1].Price / 2);
+                                    Console.WriteLine("판매에 성공했습니다");
+                                    items.Remove(items[buyItem - 1]);
+                                }
+                                Console.Clear();
+                                DisplaySellShop();
+                            }
+                            else
+                            {
+                                Console.WriteLine("잘못된 입력입니다");
+                                break;
+                            }
+                        }
+                        break;
+                }
+            }
+        }
+        static void ShopWrite(string shop, List<Item> list)
+        {
+            Console.WriteLine(shop + " 상점입니다.");
+            Console.WriteLine("[아이템 목록]\n");
+            Console.WriteLine("이름\t\t가격\t공격력\t방어력\t체력\t설명");
+            if (list.Count > 0)
+            {
+                for (int i = 0; i < list.Count; i++)
+                {
+                    string status = (i + 1).ToString() + ". " + list[i].Name + "\t" + list[i].Price.ToString() + "G" + "\t" + list[i].Atk.ToString() + "\t" + list[i].Def.ToString() + "\t" + list[i].Hp.ToString() + "\t" + list[i].Explanation;
+                    Console.WriteLine(status);
+                    Console.WriteLine();
+                }
+            }
         }
         static int CheckValidInput(int min, int max)
         {
@@ -217,13 +366,13 @@ namespace ConsoleRPG
 
     public class Character
     {
-        public string Name { get; }
-        public string Job { get; }
-        public int Level { get; }
-        public int Atk { get; }
-        public int Def { get; }
-        public int Hp { get; }
-        public int Gold { get; }
+        public string Name { get; set; }
+        public string Job { get; set; }
+        public int Level { get; set; }
+        public int Atk { get; set; }
+        public int Def { get; set; }
+        public int Hp { get; set; }
+        public int Gold { get; set; }
 
         public Character(string name, string job, int level, int atk, int def, int hp, int gold)
         {
