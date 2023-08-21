@@ -34,8 +34,7 @@ namespace ConsoleRPG
         static void DisplayGameIntro()
         {
             Console.Clear();
-            Console.WriteLine(eqItem.Count);
-            Console.WriteLine("스파르타 마을에 오신 여러분 환영합니다.");
+            TextColor("스파르타 마을에 오신 여러분 환영합니다.\n", ConsoleColor.Magenta);
             Console.WriteLine("이곳에서 전전으로 들어가기 전 활동을 할 수 있습니다.");
             Console.WriteLine();
             Console.WriteLine("1. 상태보기");
@@ -43,7 +42,7 @@ namespace ConsoleRPG
             Console.WriteLine("3. 상점");
             Console.WriteLine("4. 게임종료");
             Console.WriteLine();
-            Console.WriteLine("원하시는 행동을 입력해주세요.");
+            TextColor("원하시는 행동을 입력해주세요.\n", ConsoleColor.Red);
 
             int input = CheckValidInput(1, 4);
             switch (input)
@@ -67,8 +66,7 @@ namespace ConsoleRPG
         static void DisplayMyInfo()
         {
             Console.Clear();
-
-            Console.WriteLine("상태보기");
+            TextColor("상태보기\n", ConsoleColor.Green);
             Console.WriteLine("캐릭터의 정보르 표시합니다.");
             Console.WriteLine();
             Console.WriteLine($"Lv.{player.Level}");
@@ -97,7 +95,8 @@ namespace ConsoleRPG
                     Console.Write($" +({item.Hp})");
                 }
             }
-            Console.WriteLine($"\nGold : {player.Gold} G");
+            Console.Write($"\n보유 골드 : {player.Gold}");
+            TextColor("G\n", ConsoleColor.Yellow);
             Console.WriteLine();
             Console.WriteLine("0. 나가기");
             int input = CheckValidInput(0, 0);
@@ -112,7 +111,7 @@ namespace ConsoleRPG
         static void DisplayInventory()
         {
             Console.Clear();
-            Console.WriteLine("인벤토리");
+            TextColor("인벤토리\n", ConsoleColor.Green);
             Console.WriteLine("보유중인 아이템을 관리할 수 있습니다");
             Console.WriteLine();
             Console.WriteLine("[아이템 목록]\n");
@@ -135,8 +134,9 @@ namespace ConsoleRPG
                 }
             }
             Console.WriteLine();
-            Console.WriteLine("1. 장착관리");
             Console.WriteLine("0. 나가기");
+            Console.WriteLine("1. 장착관리");
+            Console.WriteLine("2. 강화");
             int input = CheckValidInput(0, 1);
             switch (input)
             {
@@ -151,7 +151,7 @@ namespace ConsoleRPG
         static void DisplayItemEquip()
         {
             Console.Clear();
-            Console.WriteLine("인벤토리 - 장착관리");
+            TextColor("인벤토리 - 장착관리\n", ConsoleColor.Green);
             Console.WriteLine("보유중인 아이템을 장착할 수 있습니다");
             Console.WriteLine();
             Console.WriteLine("[아이템 목록]\n");
@@ -221,6 +221,8 @@ namespace ConsoleRPG
         static void DisplayShop()
         {
             Console.Clear();
+            TextColor("상점\n", ConsoleColor.Green);
+            Console.WriteLine();
             Console.WriteLine("0. 나가기");
             Console.WriteLine("1. 무기 상점");
             Console.WriteLine("2. 방어구 상점");
@@ -252,7 +254,8 @@ namespace ConsoleRPG
                 Shop = armorShop;
                 ShopWrite("방어구", Shop);
             }
-            Console.WriteLine($"보유 골드 : {player.Gold} G");
+            Console.Write($"보유 골드 : {player.Gold}");
+            TextColor("G\n", ConsoleColor.Yellow);
             Console.WriteLine("");
             Console.WriteLine("0. 나가기");
             while (true)
@@ -270,14 +273,15 @@ namespace ConsoleRPG
                                 if (Shop[buyItem - 1].Price <= player.Gold)
                                 {
                                     player.Gold -= Shop[buyItem - 1].Price;
-                                    Console.WriteLine("구매에 성공했습니다");
+                                    TextColor("구매에 성공했습니다\n", ConsoleColor.Red);
                                     items.Add(Shop[buyItem - 1]);
                                 }
                                 else
                                 {
-                                    Console.WriteLine("돈이 부족합니다");
+                                    TextColor("돈이 부족합니다\n", ConsoleColor.Red);
                                 }
-                                Console.WriteLine($"보유 골드 : {player.Gold} G");
+                                Console.Write($"보유 골드 : {player.Gold}");
+                                TextColor("G\n", ConsoleColor.Yellow);
                             }
                             else
                             {
@@ -291,9 +295,12 @@ namespace ConsoleRPG
         }
         static void DisplaySellShop()
         {
+            Console.Clear();
+            TextColor("상점\n", ConsoleColor.Green);
             ShopWrite("판매", items);
-            Console.WriteLine($"보유 골드 : {player.Gold} G");
-            Console.WriteLine("");
+            Console.Write($"보유 골드 : {player.Gold}");
+            TextColor("G\n", ConsoleColor.Yellow);
+            Console.WriteLine();
             Console.WriteLine("0. 나가기");
             while (true)
             {
@@ -309,14 +316,15 @@ namespace ConsoleRPG
                             {
                                 if (items[buyItem - 1].Equip)
                                 {
-                                    Console.WriteLine("장착중인 아이템은 판매할 수 없습니다");
+                                    TextColor("장착중인 아이템은 판매할 수 없습니다\n", ConsoleColor.Red);
                                 }
                                 else
                                 {
                                     player.Gold += (items[buyItem - 1].Price / 2);
-                                    Console.WriteLine("판매에 성공했습니다");
+                                    TextColor("판매에 성공했습니다\n", ConsoleColor.Red);
                                     items.Remove(items[buyItem - 1]);
                                 }
+                                Thread.Sleep(500);
                                 Console.Clear();
                                 DisplaySellShop();
                             }
@@ -332,6 +340,9 @@ namespace ConsoleRPG
         }
         static void ShopWrite(string shop, List<Item> list)
         {
+            Console.Clear();
+            TextColor("상점\n", ConsoleColor.Green);
+            Console.WriteLine();
             Console.WriteLine(shop + " 상점입니다.");
             Console.WriteLine("[아이템 목록]\n");
             Console.WriteLine("이름\t\t가격\t공격력\t방어력\t체력\t설명");
@@ -344,6 +355,12 @@ namespace ConsoleRPG
                     Console.WriteLine();
                 }
             }
+        }
+        static void TextColor(string text, ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+            Console.Write(text);
+            Console.ResetColor();
         }
         static int CheckValidInput(int min, int max)
         {
@@ -395,6 +412,7 @@ namespace ConsoleRPG
         public int Def { get; set; }
         public int Hp { get; set; }
         public int Price { get; set; }
+        public int Level { get; set; }
         public bool Equip { get; set; }
     }
     public class Weapon : Item
@@ -413,6 +431,7 @@ namespace ConsoleRPG
             this.Hp = 0;
             this.Price = this.Atk * 200;
             this.Equip = false;
+            this.Level = 0;
         }
     }
     public class Armor : Item
@@ -431,6 +450,7 @@ namespace ConsoleRPG
             this.Hp = index * 5 + 20;
             this.Price = index * 600;
             this.Equip = false;
+            this.Level = 0;
         }
     }
 }
