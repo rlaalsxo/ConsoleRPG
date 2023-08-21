@@ -50,3 +50,6 @@ url:https://github.com/rlaalsxo/ConsoleRPG/blob/b79656ce2fded8147ddff53849aa83b8
 url2:https://github.com/rlaalsxo/ConsoleRPG/blob/b79656ce2fded8147ddff53849aa83b8a9fb919a/ConsoleRPG/ConsoleRPG/Program.cs#L512C9-L554C10
 
 구조체 url:https://github.com/rlaalsxo/ConsoleRPG/blob/b79656ce2fded8147ddff53849aa83b8a9fb919a/ConsoleRPG/ConsoleRPG/Program.cs#L699C5-L714C6
+
+
+그 외로 자주 사용되거나 중복되는 코드들은 따로 함수로 만들어 관리 하였습니다.
