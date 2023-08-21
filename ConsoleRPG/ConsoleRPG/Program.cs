@@ -25,7 +25,7 @@ namespace ConsoleRPG
         static void GameDataSetting()
         {
             // 캐릭터 정보 세팅
-            player = new Character("Chad", "전사", 1, 10, 5, 100, 1500);
+            player = new Character("Chad", "전사", 1, 10, 5, 100, 5000);
 
             // 아이템 정보 세팅
         }
@@ -94,8 +94,7 @@ namespace ConsoleRPG
                     Console.Write($" +({item.Hp})");
                 }
             }
-            Console.Write($"\n보유 골드 : {player.Gold}");
-            TextColor("G\n", ConsoleColor.Yellow);
+            MyGold();
             Console.WriteLine();
             Console.WriteLine("0. 나가기");
             int input = CheckValidInput(0, 0);
@@ -136,7 +135,7 @@ namespace ConsoleRPG
             Console.WriteLine("0. 나가기");
             Console.WriteLine("1. 장착관리");
             Console.WriteLine("2. 강화");
-            int input = CheckValidInput(0, 1);
+            int input = CheckValidInput(0, 2);
             switch (input)
             {
                 case 0:
@@ -144,6 +143,9 @@ namespace ConsoleRPG
                     break;
                 case 1:
                     DisplayItemEquip();
+                    break;
+                case 2:
+                    DisplayEnforce();
                     break;
             }
         }
@@ -154,24 +156,8 @@ namespace ConsoleRPG
             Console.WriteLine("보유중인 아이템을 장착할 수 있습니다");
             Console.WriteLine();
             Console.WriteLine("[아이템 목록]\n");
-            Console.WriteLine("이름\t\t공격력\t방어력\t체력\t설명");
-            if (items.Count> 0)
-            {
-                for (int i = 0; i < items.Count; i++)
-                {
-                    string status = (i + 1).ToString() + ". " + items[i].Name + "\t" + items[i].Atk.ToString() + "\t" + items[i].Def.ToString() + "\t" + items[i].Hp.ToString() + "\t" + items[i].Explanation;
-                    if (items[i].Equip)
-                    {
-                        string eqStatus = status.Insert(0, "[E]");
-                        Console.Write(eqStatus);
-                    }
-                    else
-                    {
-                        Console.Write(status);
-                    }
-                    Console.WriteLine();
-                }
-            }
+            Console.WriteLine("\t이름\t\t공격력\t방어력\t체력\t설명");
+            ItemWrite();
             Console.WriteLine("\n0. 나가기");
             while (true)
             {
@@ -190,7 +176,7 @@ namespace ConsoleRPG
                             if (items[key - 1] == _item)
                             {
                                 xItem = _item;
-                                Console.WriteLine("장비를 해제했습니다");
+                                TextColor("장비를 해제하였습니다\n", ConsoleColor.DarkCyan);
                                 items[key - 1].Equip = false;
                             }
                         }
@@ -203,18 +189,19 @@ namespace ConsoleRPG
                 }
                 else if (!items[key - 1].Equip)
                 {
-
                     if (eqItem.Count >= 0 && eqItem.Count <= 6)
                     {
                         eqItem.Add(items[key - 1]);
                         items[key - 1].Equip = true;
-                        Console.WriteLine("장착이 완료되었습니다");
+                        TextColor("장착을 완료하였습니다\n", ConsoleColor.DarkCyan);
                     }
                     else
                     {
                         Console.WriteLine("장비를 장착할 수 없습니다");
                     }
                 }
+                Thread.Sleep(700);
+                DisplayItemEquip();
             }
         }
         static void DisplayShop()
@@ -253,8 +240,7 @@ namespace ConsoleRPG
                 Shop = armorShop;
                 ShopWrite("방어구", Shop);
             }
-            Console.Write($"보유 골드 : {player.Gold}");
-            TextColor("G\n", ConsoleColor.Yellow);
+            MyGold();
             Console.WriteLine("");
             Console.WriteLine("0. 나가기");
             while (true)
@@ -279,8 +265,7 @@ namespace ConsoleRPG
                                 {
                                     TextColor("돈이 부족합니다\n", ConsoleColor.Red);
                                 }
-                                Console.Write($"보유 골드 : {player.Gold}");
-                                TextColor("G\n", ConsoleColor.Yellow);
+                                MyGold();
                             }
                             else
                             {
@@ -297,8 +282,7 @@ namespace ConsoleRPG
             Console.Clear();
             TextColor("상점\n", ConsoleColor.Green);
             ShopWrite("판매", items);
-            Console.Write($"보유 골드 : {player.Gold}");
-            TextColor("G\n", ConsoleColor.Yellow);
+            MyGold();
             Console.WriteLine();
             Console.WriteLine("0. 나가기");
             while (true)
@@ -337,6 +321,64 @@ namespace ConsoleRPG
                 }
             }
         }
+        static void DisplayEnforce()
+        {
+            Console.Clear();
+            TextColor("강화\n", ConsoleColor.Green);
+            Console.WriteLine();
+            if (items.Count > 0)
+            {
+                for (int i = 0; i < items.Count; i++)
+                {
+                    string status = (i + 1).ToString() + ". " + items[i].Name + "\t" + items[i].Atk.ToString() + "\t" + items[i].Def.ToString() + "\t" + items[i].Hp.ToString() + "\t" + items[i].Explanation;
+                    Console.Write(status);
+                    Console.WriteLine();
+                }
+            }
+            Console.WriteLine();
+            MyGold();
+            Console.WriteLine("\n0. 나가기");
+            while (true)
+            {
+                int price = 0;
+                int efItem = CheckValidInput(0, items.Count);
+                switch (efItem)
+                {
+                    case 0:
+                        DisplayInventory(); break;
+                    default:
+                        if(items.Count > 0)
+                        {
+                            foreach(Item item in items)
+                            {
+                                if(item == items[efItem - 1])
+                                {
+                                    price = item.Level * 100 + 200;
+                                    if (player.Gold >= price)
+                                    {
+                                        Console.Clear();
+                                        DrawWalls();
+                                        Console.SetCursorPosition(32, 8);
+                                        TextColor("강화에 성공했습니다\n", ConsoleColor.Cyan);
+                                        player.Gold -= price;
+                                        Console.SetCursorPosition(32, 10);
+                                        MyGold();
+                                        item.Level++;
+                                        item.ItemEnforce();
+                                    }
+                                    else
+                                    {
+                                        TextColor("돈이 부족합니다", ConsoleColor.Red);
+                                    }
+                                    Thread.Sleep(1000);
+                                    DisplayEnforce();
+                                }
+                            }
+                        }
+                        break;
+                }
+            }
+        }
         static void ShopWrite(string shop, List<Item> list)
         {
             Console.Clear();
@@ -355,11 +397,68 @@ namespace ConsoleRPG
                 }
             }
         }
+        static void ItemWrite()
+        {
+            if (items.Count > 0)
+            {
+                for (int i = 0; i < items.Count; i++)
+                {
+                    string status = (i + 1).ToString() + ".\t" + items[i].Name + "\t" + items[i].Atk.ToString() + "\t" + items[i].Def.ToString() + "\t" + items[i].Hp.ToString() + "\t" + items[i].Explanation;
+                    if (items[i].Equip)
+                    {
+                        string eqStatus = status.Insert(0, "[E]");
+                        Console.Write(eqStatus);
+                    }
+                    else
+                    {
+                        Console.Write(status);
+                    }
+                    Console.WriteLine();
+                }
+            }
+        }
         static void TextColor(string text, ConsoleColor color)
         {
             Console.ForegroundColor = color;
             Console.Write(text);
             Console.ResetColor();
+        }
+        static void MyGold()
+        {
+            Console.Write($"보유 골드 : {player.Gold}");
+            TextColor("G\n", ConsoleColor.Yellow);
+        }
+        static void DrawWalls()
+        {
+            // 상 벽 그리기
+            for (int i = 0; i < 80; i++)
+            {
+                Console.SetCursorPosition(i, 0);
+                Console.Write("@");
+                Thread.Sleep(10);
+            }
+            // 우 벽 그리기
+            for (int i = 0; i < 20; i++)
+            {
+                Console.SetCursorPosition(80, i);
+                Console.Write("@");
+                Thread.Sleep(10);
+            }
+            //하 벽 그리기
+            for (int i = 80; i > 0; i--)
+            {
+                Console.SetCursorPosition(i, 20);
+                Console.Write("@");
+                Thread.Sleep(10);
+            }
+            //좌 벽 그리기
+            for (int i = 20; i > 0; i--)
+            {
+                Console.SetCursorPosition(0, i);
+                Console.Write("@");
+                Thread.Sleep(10);
+            }
+            Console.WriteLine();
         }
         static int CheckValidInput(int min, int max)
         {
@@ -413,6 +512,10 @@ namespace ConsoleRPG
         public int Price { get; set; }
         public int Level { get; set; }
         public bool Equip { get; set; }
+        public virtual void ItemEnforce()
+        {
+            
+        }
     }
     public class Weapon : Item
     {
@@ -432,6 +535,10 @@ namespace ConsoleRPG
             this.Equip = false;
             this.Level = 0;
         }
+        public override void ItemEnforce()
+        {
+            this.Atk += this.Level * 2;
+        }
     }
     public class Armor : Item
     {
@@ -445,11 +552,16 @@ namespace ConsoleRPG
             this.Name = name[index].PadRight(namePad);
             this.Explanation = explanation[index].PadRight(exPad);
             this.Atk = 0;
-            this.Def = index * 2 + 10;
-            this.Hp = index * 5 + 20;
+            this.Def = index * 2 + 10 + Level * 5;
+            this.Hp = index * 5 + 20 + Level * 10;
             this.Price = index * 600;
             this.Equip = false;
             this.Level = 0;
+        }
+        public override void ItemEnforce()
+        {
+            this.Def += this.Level * 4;
+            this.Hp += this.Level * 10;
         }
     }
 }
