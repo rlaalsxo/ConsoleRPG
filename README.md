@@ -26,10 +26,6 @@
 선택 과제중 상점 구현 완료하였습니다.
 url:https://github.com/rlaalsxo/ConsoleRPG/blob/b79656ce2fded8147ddff53849aa83b8a9fb919a/ConsoleRPG/ConsoleRPG/Program.cs#L199C9-L314C10
 
-플레이어의 돈과 물품의 가격을 비교하여 살 수 있는지 판단하고 판매시 가격의 절반만 얻게 하였습니다.
-url:https://github.com/rlaalsxo/ConsoleRPG/blob/b79656ce2fded8147ddff53849aa83b8a9fb919a/ConsoleRPG/ConsoleRPG/Program.cs#L199C9-L314C10
-
-
 # 8/21
 선택 과제중 강화창 구현및 글씨 색깔 변경 완료하였습니다.
 
