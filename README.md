@@ -20,7 +20,7 @@
 아이템class url: https://github.com/rlaalsxo/ConsoleRPG/blob/b79656ce2fded8147ddff53849aa83b8a9fb919a/ConsoleRPG/ConsoleRPG/Program.cs#L636C5-L698C6
 
 
-인벤토리 url:https://github.com/rlaalsxo/ConsoleRPG/blob/b79656ce2fded8147ddff53849aa83b8a9fb919a/ConsoleRPG/ConsoleRPG/Program.cs#L118C9-L118C9
+인벤토리 https://github.com/rlaalsxo/ConsoleRPG/blob/b79656ce2fded8147ddff53849aa83b8a9fb919a/ConsoleRPG/ConsoleRPG/Program.cs#L118C9-L198C10
 
 # 8/20
 선택 과제중 상점 구현 완료하였습니다.
