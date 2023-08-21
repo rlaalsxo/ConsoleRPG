@@ -15,6 +15,8 @@
 리스트를 활용하여 갖고있는 장비와 장착중인 장비를 저장하였습니다.
 
 아이템은 class로 관리하였습니다
+
+
 아이템class url: https://github.com/rlaalsxo/ConsoleRPG/blob/b79656ce2fded8147ddff53849aa83b8a9fb919a/ConsoleRPG/ConsoleRPG/Program.cs#L636C5-L698C6
 
 
