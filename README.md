@@ -13,7 +13,9 @@
 (인벤토리 및 장착 관련 구현)
 
 리스트를 활용하여 갖고있는 장비와 장착중인 장비를 저장하였습니다.
-url:
+
+
+url: https://github.com/rlaalsxo/ConsoleRPG/blob/b79656ce2fded8147ddff53849aa83b8a9fb919a/ConsoleRPG/ConsoleRPG/Program.cs#L8C9-L12C52
 
 # 8/20
 선택 과제중 상점 구현 완료하였습니다.
