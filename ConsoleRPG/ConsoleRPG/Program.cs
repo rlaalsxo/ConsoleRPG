@@ -9,7 +9,6 @@ namespace ConsoleRPG
         static List<Item> weaponShop = new List<Item>();
         static List<Item> armorShop = new List<Item>();
         static List<Item> items = new List<Item>();
-        string gap = "";
         static void Main(string[] args)
         {
             for(int i = 0; i < 4; i++)
