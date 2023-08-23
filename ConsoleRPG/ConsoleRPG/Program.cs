@@ -1,6 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace ConsoleRPG
+﻿namespace ConsoleRPG
 {
     internal class Program
     {
@@ -385,19 +383,19 @@ namespace ConsoleRPG
                 case 0:
                     DisplayGameIntro();
                     break;
-                case 1:
+                case (int)DunguenType.Bagic:
                     ChoiceDungeon("초급 던전", ConsoleColor.Green, key);
                     break;
-                case 2:
+                case (int)DunguenType.Middle:
                     ChoiceDungeon("중급 던전", ConsoleColor.Green, key);
                     break;
-                case 3:
+                case (int)DunguenType.Hard:
                     ChoiceDungeon("상급 던전", ConsoleColor.Green, key);
                     break;
-                case 4:
+                case (int)DunguenType.VeryHard:
                     ChoiceDungeon("최상급 던전", ConsoleColor.Green, key);
                     break;
-                case 5:
+                case (int)DunguenType.Boss:
                     ChoiceDungeon("보스 던전", ConsoleColor.Green, key);
                     break;
                 default:
@@ -711,5 +709,13 @@ namespace ConsoleRPG
             this.ProHp = _index * 80 + 80;
             this.Gain = _index * 100 + 100;
         }
+    }
+    public enum DunguenType
+    {
+        Bagic = 1,
+        Middle,
+        Hard,
+        VeryHard,
+        Boss
     }
 }
