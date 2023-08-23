@@ -40,9 +40,12 @@ url:https://github.com/rlaalsxo/ConsoleRPG/blob/b79656ce2fded8147ddff53849aa83b8
 
 
 던전 구현하였습니다.
+
 던전에 난이도에 따른 요구치와 플레이어의 스탯을 비교하여 더 높을시 클리어 확률을 높이는 식으로 구현하였습니다.
+
 던전은 구조체로 만들어 정보를 저장하였습니다.
 
+던전의 난이도를 열거형으로 표현하였습니다.
 
 던전 url1:https://github.com/rlaalsxo/ConsoleRPG/blob/b79656ce2fded8147ddff53849aa83b8a9fb919a/ConsoleRPG/ConsoleRPG/Program.cs#L365C9-L460C10
 
@@ -50,6 +53,8 @@ url:https://github.com/rlaalsxo/ConsoleRPG/blob/b79656ce2fded8147ddff53849aa83b8
 url2:https://github.com/rlaalsxo/ConsoleRPG/blob/b79656ce2fded8147ddff53849aa83b8a9fb919a/ConsoleRPG/ConsoleRPG/Program.cs#L512C9-L554C10
 
 구조체 url:https://github.com/rlaalsxo/ConsoleRPG/blob/b79656ce2fded8147ddff53849aa83b8a9fb919a/ConsoleRPG/ConsoleRPG/Program.cs#L699C5-L714C6
+
+열거형 url:https://github.com/rlaalsxo/ConsoleRPG/blob/bf7cda94c2615fa46915612fb8863ab406f2cbb1/ConsoleRPG/ConsoleRPG/Program.cs#L713C5-L720C6
 
 
 그 외로 자주 사용되거나 중복되는 코드들은 따로 함수로 만들어 관리 하였습니다.
